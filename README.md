@@ -1,5 +1,7 @@
 # Calendra App
 
+Calendra is a simple and efficient calendar app that helps you manage your events.
+
 ## Getting Started
 
 First, run the development server:
