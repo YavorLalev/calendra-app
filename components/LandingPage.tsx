@@ -10,7 +10,7 @@ export default function LandingPage() {
         <p className="font-extralight">
           Book your meetings and don't forget about Friday
         </p>
-        <div className="mt-10">
+        <div className="mt-6">
           <Image
             src="/assets/planning.svg"
             width={500}
@@ -20,7 +20,7 @@ export default function LandingPage() {
         </div>
       </section>
       {/* Clerk Sign-In Component*/}
-      <div className="mt-3">
+      <div className="mt-2">
         <SignIn
           routing="hash" //Keeps sign-in UI on the same page using hash-based routing
         />
