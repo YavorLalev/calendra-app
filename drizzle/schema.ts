@@ -16,7 +16,7 @@ const updatedAt = timestamp("updatedAt")
   .defaultNow()
   .$onUpdate(() => new Date()); // automatically updates to current time on update
 
-//Define the "events" table.
+//Define the "events" table with name, description and duration
 export const EventTable = pgTable(
   "events", //table name in the DB
   {
@@ -33,3 +33,12 @@ export const EventTable = pgTable(
     index("clerkUserIdIndex").on(table.clerkUserId), //index on clerkUserId for faster querying
   ]
 );
+
+//Define the "schedules" table, one per user, with timezone and timestamps
+export const SchedulesTable = pgTable("schedules", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  timezone: text("timezone").notNull(),
+  clerkUserId: text("clerkUserId").notNull().unique(), // unique user ID from Clerk
+  createdAt,
+  updatedAt,
+});
