@@ -11,6 +11,7 @@ import {
   pgEnum,
 } from "drizzle-orm/pg-core";
 import { DAYS_OF_WEEK_IN_ORDER } from "@/constants";
+import { relations } from "drizzle-orm";
 
 const createdAt = timestamp("createdAt").notNull().defaultNow();
 const updatedAt = timestamp("updatedAt")
@@ -45,6 +46,11 @@ export const ScheduleTable = pgTable("schedules", {
   updatedAt,
 });
 
+//Define relationschips for the ScheduleTable: a schedule has many availabilities
+export const scheduleRelations = relations(ScheduleTable, ({ many }) => ({
+  availabilities: many(ScheduleAvailabilityTable), // one-to-many relationschips
+}));
+
 // Define a PostgreSQL ENUM for the days of the week
 export const scheduleDayOfWeekEnum = pgEnum("day", DAYS_OF_WEEK_IN_ORDER);
 
@@ -53,7 +59,7 @@ export const ScheduleAvailabilityTable = pgTable(
   "scheduleAvailabilities",
   {
     id: uuid("id").primaryKey().defaultRandom(),
-    scheduleId: uuid("scheduleId") // foreign key to the Schedule table
+    scheduleId: uuid("scheduleId") // foreign key pointing to the ScheduleTable.id
       .notNull()
       .references(() => ScheduleTable.id, { onDelete: "cascade" }), //cascade delete when schedule is deleted
     startTime: text("startTime").notNull(), // start time of availability
@@ -63,4 +69,15 @@ export const ScheduleAvailabilityTable = pgTable(
   (table) => [
     index("scheduleIdIndex").on(table.scheduleId), // index on foreign key for faster lookups
   ]
+);
+
+//Define the reverse ralation: each availability belongs to a schedule
+export const ScheduleAvailabilityRelations = relations(
+  ScheduleAvailabilityTable,
+  ({ one }) => ({
+    schedule: one(ScheduleTable, {
+      fields: [ScheduleAvailabilityTable.scheduleId], // local key
+      references: [ScheduleTable.id], //foreign key
+    }),
+  })
 );
