@@ -46,7 +46,7 @@ export const ScheduleTable = pgTable("schedules", {
   updatedAt,
 });
 
-//Define relationschips for the ScheduleTable: a schedule has many availabilities
+//Define relationships for the ScheduleTable: a schedule has many availabilities
 export const scheduleRelations = relations(ScheduleTable, ({ many }) => ({
   availabilities: many(ScheduleAvailabilityTable), // one-to-many relationschips
 }));
