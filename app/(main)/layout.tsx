@@ -5,5 +5,9 @@ export default async function MainLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <main className="relative"></main>;
+  return (
+    <main className="relative">
+      <section className="pt-36">{children}</section>
+    </main>
+  );
 }
